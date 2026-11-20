@@ -5,8 +5,12 @@ import Home from '../pages/Home'
 import Products from '../pages/Products'
 import Cart from '../pages/Cart'
 import NotFound from '../pages/NotFound'
+import ProductDetails from "../pages/ProductDetails";
 
 function AppRouter() {
+
+  
+
   return (
     <BrowserRouter>
       <Routes>
@@ -14,6 +18,8 @@ function AppRouter() {
           <Route index element={<Home />} />
           <Route path="products" element={<Products />} />
           <Route path="cart" element={<Cart />} />
+              
+           <Route path="product/:productId" element={<ProductDetails/>} />   
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

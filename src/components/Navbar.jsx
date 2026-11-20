@@ -1,10 +1,14 @@
-
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { FaBars, FaSearch, FaTimes } from "react-icons/fa";
+import { CartContext } from "../context/CartContext";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+ const { cart } = useContext(CartContext);
+
+  const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
 
   const navLinkClass = ({ isActive }) =>
     isActive
@@ -17,14 +21,10 @@ function Navbar() {
 
   return (
     <nav className="bg-gray-900 text-white px-6 py-4 sticky top-0 z-50">
-
       {/* Main Navbar */}
       <div className="flex justify-between items-center">
-
         {/* Logo */}
-        <h1 className="text-2xl font-bold text-orange-500">
-          Shop Mart
-        </h1>
+        <h1 className="text-2xl font-bold text-orange-500">Shop Mart</h1>
 
         {/* Mobile Menu Button */}
         <button
@@ -38,7 +38,6 @@ function Navbar() {
 
         {/* Desktop Navigation Links */}
         <div className="hidden md:flex items-center gap-6">
-
           <NavLink to="/" end className={navLinkClass}>
             Home
           </NavLink>
@@ -55,15 +54,13 @@ function Navbar() {
           >
             <span>Cart</span>
             <span className="bg-orange-500 text-white rounded-full px-2 py-1 text-xs">
-              0
+              {totalQuantity}
             </span>
           </NavLink>
-
         </div>
 
         {/* Desktop Search */}
         <div className="hidden md:flex items-center gap-2">
-
           <input
             type="text"
             placeholder="Search products..."
@@ -76,15 +73,12 @@ function Navbar() {
           >
             <FaSearch />
           </button>
-
         </div>
-
       </div>
 
       {/* Mobile Navigation Menu */}
       {isMenuOpen && (
         <div className="md:hidden flex flex-col items-center gap-5 pt-6">
-
           <NavLink
             to="/"
             end
@@ -111,13 +105,11 @@ function Navbar() {
           >
             <span>Cart</span>
             <span className="bg-orange-500 text-white rounded-full px-2 py-1 text-xs">
-              0
+              {totalQuantity}
             </span>
           </NavLink>
-
         </div>
       )}
-
     </nav>
   );
 }
