@@ -36,6 +36,17 @@ function Cart() {
     );
   }
 
+  const handleRemove = (productId) => {
+    setCart(cart.filter((item) => item.id !== productId));
+  };
+
+  const totalPrice = cart.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0,
+  );
+
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+
   return (
     <div className="max-w-7xl mx-auto px-6 py-12">
       <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
@@ -80,9 +91,22 @@ function Cart() {
               <p className="font-semibold mt-2">
                 Subtotal: ₹{item.price * item.quantity}
               </p>
+
+              <button
+                onClick={() => handleRemove(item.id)}
+                className="bg-red-500 text-white px-4 py-2 rounded-lg mt-3 hover:bg-red-600"
+              >
+                Remove
+              </button>
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="mt-10 border-t pt-6 flex flex-col items-end">
+        <p className="text-lg text-gray-600">Total Items: {totalItems}</p>
+
+        <h2 className="text-2xl font-bold mt-2">Total Price: ₹{totalPrice}</h2>
       </div>
     </div>
   );
