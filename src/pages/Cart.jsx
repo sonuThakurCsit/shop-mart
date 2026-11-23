@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import { Link } from "react-router-dom";
 
 function Cart() {
   const { cart, setCart } = useContext(CartContext);
@@ -108,6 +109,13 @@ function Cart() {
 
         <h2 className="text-2xl font-bold mt-2">Total Price: ₹{totalPrice}</h2>
       </div>
+
+      <Link
+        to="/checkout"
+        className="block w-full text-center bg-orange-500 text-white py-3 rounded-lg mt-6 hover:bg-orange-600 font-semibold"
+      >
+        Proceed to Checkout
+      </Link>
     </div>
   );
 }
