@@ -2,12 +2,14 @@ import { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { FaBars, FaSearch, FaTimes } from "react-icons/fa";
 import { CartContext } from "../context/CartContext";
-
+import { WishlistContext } from "../context/WishlistContext";
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
- const { cart } = useContext(CartContext);
+  const { cart } = useContext(CartContext);
+  const { wishlist } = useContext(WishlistContext);
 
+  const wishlistCount = wishlist.length;
   const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
 
   const navLinkClass = ({ isActive }) =>
@@ -44,6 +46,19 @@ function Navbar() {
 
           <NavLink to="/products" className={navLinkClass}>
             Products
+          </NavLink>
+
+          <NavLink
+            to="/wishlist"
+            className={({ isActive }) =>
+              `${navLinkClass({ isActive })} flex items-center gap-2`
+            }
+          >
+            <span>Wishlist ❤️</span>
+
+            <span className="bg-red-500 text-white rounded-full px-2 py-1 text-xs">
+              {wishlistCount}
+            </span>
           </NavLink>
 
           <NavLink
@@ -94,6 +109,20 @@ function Navbar() {
             onClick={handleMenuClose}
           >
             Products
+          </NavLink>
+
+          <NavLink
+            to="/wishlist"
+            className={({ isActive }) =>
+              `${navLinkClass({ isActive })} flex items-center gap-2`
+            }
+            onClick={handleMenuClose}
+          >
+            <span>Wishlist ❤️</span>
+
+            <span className="bg-red-500 text-white rounded-full px-2 py-1 text-xs">
+              {wishlistCount}
+            </span>
           </NavLink>
 
           <NavLink
