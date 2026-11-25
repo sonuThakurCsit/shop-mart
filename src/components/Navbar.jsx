@@ -72,6 +72,17 @@ function Navbar() {
               {totalQuantity}
             </span>
           </NavLink>
+
+          <NavLink
+            to="/orders"
+            className={({ isActive }) =>
+              isActive
+                ? "text-green-500 font-semibold"
+                : "text-white hover:text-green-400"
+            }
+          >
+            Order History
+          </NavLink>
         </div>
 
         {/* Desktop Search */}
@@ -136,6 +147,17 @@ function Navbar() {
             <span className="bg-orange-500 text-white rounded-full px-2 py-1 text-xs">
               {totalQuantity}
             </span>
+          </NavLink>
+
+          <NavLink
+            to="/orders"
+            className={({ isActive }) =>
+              isActive
+                ? "text-green-500 font-semibold"
+                : "text-white hover:text-green-400"
+            }
+          >
+            Order History
           </NavLink>
         </div>
       )}

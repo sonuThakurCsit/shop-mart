@@ -8,6 +8,7 @@ import NotFound from '../pages/NotFound'
 import ProductDetails from "../pages/ProductDetails";
 import Checkout from "../pages/Checkout";
 import Wishlist from "../pages/Wishlist";
+import OrderHistory from "../pages/OrderHistory";
 
 
 function AppRouter() {
@@ -22,6 +23,7 @@ function AppRouter() {
           <Route path="products" element={<Products />} />
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
+          <Route path="orders" element={<OrderHistory />} />
               
            <Route path="product/:productId" element={<ProductDetails/>} />
            <Route path="wishlist" element={<Wishlist/>} />
