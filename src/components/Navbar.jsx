@@ -1,15 +1,22 @@
 import { useState, useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FaBars, FaSearch, FaTimes } from "react-icons/fa";
+
 import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
+import { AuthContext } from "../context/AuthContext";
+
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { cart } = useContext(CartContext);
   const { wishlist } = useContext(WishlistContext);
+  const { currentUser, logout } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   const wishlistCount = wishlist.length;
+
   const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
 
   const navLinkClass = ({ isActive }) =>
@@ -17,16 +24,25 @@ function Navbar() {
       ? "text-orange-500 transition-colors duration-300"
       : "hover:text-orange-500 transition-colors duration-300";
 
-  function handleMenuClose() {
+  const handleMenuClose = () => {
     setIsMenuOpen(false);
-  }
+  };
+
+  // Handle Logout
+  const handleLogout = () => {
+    logout();
+    setIsMenuOpen(false);
+    navigate("/login");
+  };
 
   return (
     <nav className="bg-gray-900 text-white px-6 py-4 sticky top-0 z-50">
       {/* Main Navbar */}
       <div className="flex justify-between items-center">
         {/* Logo */}
-        <h1 className="text-2xl font-bold text-orange-500">Shop Mart</h1>
+        <NavLink to="/" className="text-2xl font-bold text-orange-500">
+          Shop Mart
+        </NavLink>
 
         {/* Mobile Menu Button */}
         <button
@@ -38,7 +54,7 @@ function Navbar() {
           {isMenuOpen ? <FaTimes /> : <FaBars />}
         </button>
 
-        {/* Desktop Navigation Links */}
+        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
           <NavLink to="/" end className={navLinkClass}>
             Home
@@ -55,7 +71,6 @@ function Navbar() {
             }
           >
             <span>Wishlist ❤️</span>
-
             <span className="bg-red-500 text-white rounded-full px-2 py-1 text-xs">
               {wishlistCount}
             </span>
@@ -73,16 +88,35 @@ function Navbar() {
             </span>
           </NavLink>
 
-          <NavLink
-            to="/orders"
-            className={({ isActive }) =>
-              isActive
-                ? "text-green-500 font-semibold"
-                : "text-white hover:text-green-400"
-            }
-          >
+          <NavLink to="/orders" className={navLinkClass}>
             Order History
           </NavLink>
+
+          {/* Authentication Links */}
+          {currentUser ? (
+            <>
+              <span className="text-orange-400 font-semibold">
+                Hi, {currentUser.fullName}
+              </span>
+
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg transition"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <NavLink to="/login" className={navLinkClass}>
+                Login
+              </NavLink>
+
+              <NavLink to="/register" className={navLinkClass}>
+                Register
+              </NavLink>
+            </>
+          )}
         </div>
 
         {/* Desktop Search */}
@@ -129,8 +163,7 @@ function Navbar() {
             }
             onClick={handleMenuClose}
           >
-            <span>Wishlist ❤️</span>
-
+            Wishlist ❤️
             <span className="bg-red-500 text-white rounded-full px-2 py-1 text-xs">
               {wishlistCount}
             </span>
@@ -143,7 +176,7 @@ function Navbar() {
             }
             onClick={handleMenuClose}
           >
-            <span>Cart</span>
+            Cart
             <span className="bg-orange-500 text-white rounded-full px-2 py-1 text-xs">
               {totalQuantity}
             </span>
@@ -151,14 +184,45 @@ function Navbar() {
 
           <NavLink
             to="/orders"
-            className={({ isActive }) =>
-              isActive
-                ? "text-green-500 font-semibold"
-                : "text-white hover:text-green-400"
-            }
+            className={navLinkClass}
+            onClick={handleMenuClose}
           >
             Order History
           </NavLink>
+
+          {/* Mobile Authentication Links */}
+          {currentUser ? (
+            <>
+              <span className="text-orange-400 font-semibold">
+                Hi, {currentUser.fullName}
+              </span>
+
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <NavLink
+                to="/login"
+                className={navLinkClass}
+                onClick={handleMenuClose}
+              >
+                Login
+              </NavLink>
+
+              <NavLink
+                to="/register"
+                className={navLinkClass}
+                onClick={handleMenuClose}
+              >
+                Register
+              </NavLink>
+            </>
+          )}
         </div>
       )}
     </nav>
